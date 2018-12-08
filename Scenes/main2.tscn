@@ -1,0 +1,98 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scenes/wall.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Sprites/bonus.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/player.tscn" type="PackedScene" id=3]
+
+[node name="main" type="Node2D" index="0"]
+
+_sections_unfolded = [ "Transform" ]
+
+[node name="walls" type="Node2D" parent="." index="0"]
+
+editor/display_folded = true
+
+[node name="ground" parent="walls" index="0" instance=ExtResource( 1 )]
+
+position = Vector2( 886.913, 474.985 )
+scale = Vector2( 37.6597, 1 )
+
+[node name="left_wall" parent="walls" index="1" instance=ExtResource( 1 )]
+
+position = Vector2( 156.111, 75.325 )
+rotation = 1.5708
+scale = Vector2( 19.796, 1 )
+_sections_unfolded = [ "Pickable", "Transform" ]
+
+[node name="right_wall" parent="walls" index="2" instance=ExtResource( 1 )]
+
+position = Vector2( 1615.09, 61.4901 )
+rotation = 1.5708
+scale = Vector2( 19.5203, 1 )
+_sections_unfolded = [ "Pickable", "Transform" ]
+
+[node name="ceil" parent="walls" index="3" instance=ExtResource( 1 )]
+
+position = Vector2( 896.854, -339.591 )
+scale = Vector2( 37.8672, 1 )
+
+[node name="platf" parent="walls" index="4" instance=ExtResource( 1 )]
+
+position = Vector2( 194.34, 300.507 )
+rotation = 0.118738
+scale = Vector2( 2.60489, 0.511953 )
+
+[node name="platf2" parent="walls" index="5" instance=ExtResource( 1 )]
+
+position = Vector2( 441.47, 169.946 )
+rotation = 3.11769
+scale = Vector2( 3.78362, 1.33811 )
+
+[node name="platf3" parent="walls" index="6" instance=ExtResource( 1 )]
+
+position = Vector2( 877.595, 140.331 )
+rotation = 2.98162
+scale = Vector2( 8.14353, 1.60865 )
+
+[node name="platf4" parent="walls" index="7" instance=ExtResource( 1 )]
+
+position = Vector2( 1002.54, 288.364 )
+rotation = 2.93069
+scale = Vector2( 3.95603, 2.63744 )
+
+[node name="platf8" parent="walls" index="8" instance=ExtResource( 1 )]
+
+position = Vector2( 1413.57, 382.252 )
+rotation = 3.16108
+scale = Vector2( 11.0339, 4.21755 )
+
+[node name="platf5" parent="walls" index="9" instance=ExtResource( 1 )]
+
+position = Vector2( 1417.85, -99.1976 )
+rotation = 3.1344
+scale = Vector2( 9.6995, 1.89623 )
+
+[node name="platf6" parent="walls" index="10" instance=ExtResource( 1 )]
+
+position = Vector2( 718.433, -273.453 )
+rotation = 3.10811
+scale = Vector2( 6.36847, 2.78589 )
+
+[node name="platf7" parent="walls" index="11" instance=ExtResource( 1 )]
+
+position = Vector2( 294.76, -41.2443 )
+rotation = 3.30871
+scale = Vector2( 7.31201, 3.27596 )
+
+[node name="bg" type="Node2D" parent="." index="1"]
+
+[node name="Sprite" type="Sprite" parent="bg" index="0"]
+
+position = Vector2( 1513.6, -227.855 )
+texture = ExtResource( 2 )
+
+[node name="player" parent="." index="2" instance=ExtResource( 3 )]
+
+position = Vector2( 208.478, 411.54 )
+
+

@@ -1,0 +1,117 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scenes/player.gd" type="Script" id=1]
+
+[sub_resource type="CapsuleShape2D" id=1]
+
+custom_solver_bias = 0.0
+radius = 20.0
+height = 40.0
+
+[sub_resource type="RectangleShape2D" id=2]
+
+custom_solver_bias = 0.0
+extents = Vector2( 37.6526, 10 )
+
+[node name="player" type="KinematicBody2D"]
+
+input_pickable = false
+collision_layer = 4
+collision_mask = 1
+collision/safe_margin = 0.08
+script = ExtResource( 1 )
+_sections_unfolded = [ "Collision", "collision" ]
+
+[node name="Polygon2D" type="Polygon2D" parent="." index="0"]
+
+position = Vector2( 0, 1.10445 )
+scale = Vector2( 2, 2 )
+polygon = PoolVector2Array( -9.66302, -20.3437, 10.1204, -20.1343, 10.1204, 19.6418, -10.5275, 19.7056 )
+uv = PoolVector2Array(  )
+color = Color( 0.184314, 0.117647, 0.372549, 1 )
+vertex_colors = PoolColorArray(  )
+offset = Vector2( 0, 0 )
+antialiased = false
+texture = null
+texture_offset = Vector2( 0, 0 )
+texture_scale = Vector2( 1, 1 )
+texture_rotation_degrees = 0.0
+invert_enable = false
+invert_border = 100.0
+_sections_unfolded = [ "Transform" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
+
+shape = SubResource( 1 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="pos_cacher" type="Timer" parent="." index="2"]
+
+process_mode = 0
+wait_time = 0.15
+one_shot = false
+autostart = true
+
+[node name="wait_timer" type="Timer" parent="." index="3"]
+
+process_mode = 1
+wait_time = 0.1
+one_shot = true
+autostart = false
+
+[node name="area_lever" type="Area2D" parent="." index="4"]
+
+editor/display_folded = true
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+monitorable = false
+collision_layer = 0
+collision_mask = 2
+audio_bus_override = false
+audio_bus_name = "Master"
+_sections_unfolded = [ "Collision" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="area_lever" index="0"]
+
+position = Vector2( 0.21463, 30.2641 )
+shape = SubResource( 2 )
+
+[node name="chain_ray" type="RayCast2D" parent="." index="5"]
+
+enabled = false
+exclude_parent = true
+cast_to = Vector2( 320, 0 )
+collision_mask = 1
+
+[node name="camera" type="Camera2D" parent="." index="6"]
+
+anchor_mode = 1
+rotating = false
+current = true
+zoom = Vector2( 1, 1 )
+limit_left = -10000000
+limit_top = -10000000
+limit_right = 10000000
+limit_bottom = 10000000
+limit_smoothed = false
+drag_margin_h_enabled = true
+drag_margin_v_enabled = true
+smoothing_enabled = false
+smoothing_speed = 5.0
+offset_v = 0.0
+offset_h = 0.0
+drag_margin_left = 0.0
+drag_margin_top = 0.0
+drag_margin_right = 0.0
+drag_margin_bottom = 0.0
+editor_draw_screen = true
+editor_draw_limits = false
+editor_draw_drag_margin = false
+_sections_unfolded = [ "Drag Margin" ]
+
+[connection signal="timeout" from="pos_cacher" to="." method="_on_pos_cacher_timeout"]
+
+
