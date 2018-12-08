@@ -7,11 +7,11 @@
 custom_solver_bias = 0.0
 radius = 10.0
 
-[node name="chain" type="KinematicBody2D"]
+[node name="chain" type="KinematicBody2D" index="0"]
 
 input_pickable = false
 collision_layer = 0
-collision_mask = 1
+collision_mask = 17
 collision/safe_margin = 0.08
 script = ExtResource( 1 )
 _sections_unfolded = [ "Collision", "collision" ]
@@ -22,7 +22,22 @@ shape = SubResource( 1 )
 
 [node name="sprite" type="Polygon2D" parent="." index="1"]
 
-polygon = PoolVector2Array( -6.46216, -7.12937, 6.9523, -7.3183, 5.44081, 8.07998, -7.87918, 6.37956 )
+polygon = PoolVector2Array( -6.46216, -7.12937, 6.9523, -7.3183, 5.44081, 8.07998, -7.87918, 6.37956, -11, -2, -17, 0, -18, 6, -22, 2, -20, -2 )
+uv = PoolVector2Array(  )
+color = Color( 1, 1, 1, 1 )
+vertex_colors = PoolColorArray(  )
+offset = Vector2( 0, 0 )
+antialiased = false
+texture = null
+texture_offset = Vector2( 0, 0 )
+texture_scale = Vector2( 1, 1 )
+texture_rotation_degrees = 0.0
+invert_enable = false
+invert_border = 100.0
+
+[node name="chain" type="Polygon2D" parent="." index="2"]
+
+polygon = PoolVector2Array( 0, -3, 1, -3, 1, 3, 0, 3 )
 uv = PoolVector2Array(  )
 color = Color( 1, 1, 1, 1 )
 vertex_colors = PoolColorArray(  )

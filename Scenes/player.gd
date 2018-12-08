@@ -76,8 +76,8 @@ func _physics_process(delta):
 			if hook.is_grubbed():
 				STATE = HOOK_MOVE
 				var d = hook.global_position - global_position
-				linear_vel = HOOK_JUMP.x * d.normalized()
-				linear_vel.y = HOOK_JUMP.y
+#				linear_vel = HOOK_JUMP.x * d.normalized()
+#				linear_vel.y = HOOK_JUMP.y
 				_hook_length = d.length()
 		HOOK_MOVE:
 			if not hook.is_grubbed():
@@ -170,8 +170,6 @@ func input_hook():
 			hook.back()
 		else:
 			hook.target = get_local_mouse_position().angle()
-	elif Input.is_action_just_released("chain_throw"):
-		hook.grub()
 
 func _on_pos_cacher_timeout():
 	if poses_array.size() >= 10 / $pos_cacher.wait_time:

@@ -1,23 +1,29 @@
 extends KinematicBody2D
 
-const GRAVITY_VEC = Vector2(0, 1800)
-const FLOOR_NORMAL = Vector2(0, -1)
-const SLOPE_SLIDE_STOP = 25.0
-const MOVE_SPEED = 1600
+const MOVE_SPEED = 2600
 const MAX_DISTANCE = 480
 const MIN_DISTANCE = 40
+const GRUB_COLLISION_MASK = 16
 
-enum STATES {INACTIVE, FLY, GRUBBING, GRUBBED, BACK}
+enum STATES {INACTIVE, FLY, GRUBBED, BACK}
 var STATE = INACTIVE
 
 var parent = null
 var target = null setget set_target
 
 var linear_vel = Vector2()
-var _last_grub_pos = null
 
 func _process(delta):
-	pass
+	if visible:
+		var d = parent.global_position - global_position
+		$chain.scale.x = d.length()
+		$chain.rotation = d.angle()
+		if STATE == BACK:
+			var t = d.angle()
+			$sprite.rotation = atan(tan(t))
+			var x = sign(cos(t))
+			x = x if x != 0 else $sprite.scale.x 
+			$sprite.scale.x = x
 
 func _physics_process(delta):
 	#state action
@@ -25,44 +31,13 @@ func _physics_process(delta):
 		INACTIVE:
 			hide()
 		FLY:
-			linear_vel += GRAVITY_VEC * delta 
-			var move_dir = linear_vel * delta
-			while move_dir.length_squared() > 0:
-				var kincoll = move_and_collide(move_dir)
-				if kincoll:
-					move_dir -= kincoll.travel
-					linear_vel -= kincoll.normal * kincoll.normal.dot(linear_vel)
-					move_dir -= kincoll.normal * kincoll.normal.dot(move_dir)
+			var kincoll = move_and_collide(linear_vel * delta)
+			if kincoll:
+				if kincoll.collider.collision_layer & GRUB_COLLISION_MASK:
+					global_position = kincoll.collider.global_position
+					grub()
 				else:
-					break
-			
-			if global_position.distance_to(parent.global_position) >= MAX_DISTANCE:
-				grub()
-		GRUBBING:
-			var d = parent.global_position - global_position
-			if d.length() <= min(MOVE_SPEED*delta, MIN_DISTANCE):
-				STATE = INACTIVE
-			else:
-				linear_vel = MOVE_SPEED * d.normalized()
-				var move_dir = linear_vel*delta
-				var grubbed = false
-				
-				while move_dir.length_squared() > 0.1:
-					var kincoll = move_and_collide(move_dir)
-					if kincoll:
-						move_dir -= kincoll.travel
-						if kincoll.normal.dot(FLOOR_NORMAL) >= cos(deg2rad(SLOPE_SLIDE_STOP)):
-							_last_grub_pos = kincoll.position
-							grubbed = true
-						
-						linear_vel -= kincoll.normal * kincoll.normal.dot(linear_vel)
-						move_dir -= kincoll.normal * kincoll.normal.dot(move_dir)
-					else:
-						break
-				
-				if _last_grub_pos != null and not grubbed:
-					STATE = GRUBBED
-					global_position = _last_grub_pos
+					back()
 			
 			if global_position.distance_to(parent.global_position) >= MAX_DISTANCE:
 				back()
@@ -83,14 +58,17 @@ func set_target(t):
 		show()
 		target = t
 		linear_vel = Vector2(MOVE_SPEED, 0).rotated(t)
+		$sprite.rotation = atan(tan(t))
+		$sprite.scale.x = sign(-cos(t))
+		if $sprite.scale.x == 0:
+			$sprite.scale.x = 1
 		global_position = parent.global_position
 		STATE = FLY
 
 
 func grub():
 	if STATE == FLY:
-		STATE = GRUBBING
-		_last_grub_pos = null
+		STATE = GRUBBED
 
 func back():
 	if STATE != INACTIVE:
