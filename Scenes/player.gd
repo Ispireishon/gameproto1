@@ -17,6 +17,7 @@ var STATE = STAND
 
 var hook = preload('res://Scenes/hook.tscn').instance()
 var _hook_length = 1
+var _hooked = false
 
 var poses_array = []
 var linear_vel = Vector2()
@@ -25,6 +26,9 @@ func _ready():
 	get_parent().call_deferred('add_child', hook)
 	hook.parent = self
 	hook.hide()
+
+func _process(delta):
+	$UI/lblfps.text = "FPS:" + str(Engine.get_frames_per_second())
 
 func _physics_process(delta):
 	
@@ -42,11 +46,13 @@ func _physics_process(delta):
 			if d.length() > _hook_length:
 				linear_vel -= (d.length() -_hook_length)*d.normalized() / delta
 				global_position = _hook_length * d.normalized() + hook.global_position
+				_hooked = true
 				
 			input_hook()
-			if is_on_floor():
+			if is_on_floor() or not _hooked:
 				input_move()
 				input_jump()
+				_hooked = false
 			else:
 				var move_dir = 0
 				if Input.is_action_pressed("move_right"):
@@ -57,6 +63,19 @@ func _physics_process(delta):
 				
 			if Input.is_action_pressed('jump'):
 				_hook_length = max(hook.MIN_DISTANCE, _hook_length - CLIMB_SPEED*delta)
+				if _hook_length < hook.MIN_DISTANCE*1.5 and is_on_wall():
+					
+					var move_dir = 0
+					if Input.is_action_pressed("move_right"):
+						move_dir += 1
+					if Input.is_action_pressed("move_left"):
+						move_dir -= 1
+					
+					if move_dir != 0:
+						input_move()
+						linear_vel.y = -JUMP_SPEED
+						hook.back()
+						
 			if Input.is_action_pressed('down'):
 				_hook_length = min(hook.MAX_DISTANCE, _hook_length + CLIMB_SPEED*delta)
 	#match HOOK_STATE:
@@ -79,6 +98,7 @@ func _physics_process(delta):
 #				linear_vel = HOOK_JUMP.x * d.normalized()
 #				linear_vel.y = HOOK_JUMP.y
 				_hook_length = d.length()
+				_hooked = false
 		HOOK_MOVE:
 			if not hook.is_grubbed():
 				STATE = JUMP
@@ -170,6 +190,7 @@ func input_hook():
 			hook.back()
 		else:
 			hook.target = get_local_mouse_position().angle()
+			
 
 func _on_pos_cacher_timeout():
 	if poses_array.size() >= 10 / $pos_cacher.wait_time:
