@@ -7,7 +7,7 @@ const JUMP_SPEED = 480*1.5
 const MOVE_SPEED = 500
 const HOOK_JUMP = Vector2(600, -480*1.5)
 const HOOK_SWING = 4
-const CLIMB_SPEED = 50
+const CLIMB_SPEED = 100
 
 const MIN_RUN_SPEED = 0.2
 
@@ -28,7 +28,7 @@ func _ready():
 	hook.hide()
 
 func _process(delta):
-	$UI/lblfps.text = "FPS:" + str(Engine.get_frames_per_second())
+	$UI/fps.text = "FPS:" + str(Engine.get_frames_per_second())
 
 func _physics_process(delta):
 	

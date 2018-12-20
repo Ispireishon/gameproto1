@@ -5,7 +5,7 @@
 [ext_resource path="res://Sprites/bonus.png" type="Texture" id=3]
 [ext_resource path="res://Scenes/player.tscn" type="PackedScene" id=4]
 
-[node name="main" type="Node2D" index="0"]
+[node name="main" type="Node2D"]
 
 _sections_unfolded = [ "Transform" ]
 
@@ -43,7 +43,7 @@ scale = Vector2( 2.60489, 0.511953 )
 
 [node name="platf2" parent="walls" index="5" instance=ExtResource( 1 )]
 
-position = Vector2( 441.47, 169.946 )
+position = Vector2( 471.617, 169.946 )
 rotation = 3.11769
 scale = Vector2( 3.78362, 1.33811 )
 
@@ -90,12 +90,12 @@ _sections_unfolded = [ "Collision", "Transform" ]
 
 [node name="grub_area2" parent="walls" index="13" instance=ExtResource( 2 )]
 
-position = Vector2( 367.476, 145.509 )
+position = Vector2( 397.623, 145.509 )
 _sections_unfolded = [ "Collision", "Transform" ]
 
 [node name="grub_area3" parent="walls" index="14" instance=ExtResource( 2 )]
 
-position = Vector2( 514.766, 143.712 )
+position = Vector2( 544.913, 143.712 )
 _sections_unfolded = [ "Collision", "Transform" ]
 
 [node name="grub_area4" parent="walls" index="15" instance=ExtResource( 2 )]
@@ -133,7 +133,24 @@ _sections_unfolded = [ "Collision", "Transform" ]
 position = Vector2( 1225.03, -137.011 )
 _sections_unfolded = [ "Collision", "Transform" ]
 
+[node name="grub_area13" parent="walls" index="22" instance=ExtResource( 2 )]
+
+position = Vector2( 1226.54, -63.1514 )
+_sections_unfolded = [ "Collision", "Transform" ]
+
+[node name="grub_area11" parent="walls" index="23" instance=ExtResource( 2 )]
+
+position = Vector2( 597.977, -216.9 )
+_sections_unfolded = [ "Collision", "Transform" ]
+
+[node name="grub_area12" parent="walls" index="24" instance=ExtResource( 2 )]
+
+position = Vector2( 845.18, -227.451 )
+_sections_unfolded = [ "Collision", "Transform" ]
+
 [node name="bg" type="Node2D" parent="." index="1"]
+
+editor/display_folded = true
 
 [node name="Sprite" type="Sprite" parent="bg" index="0"]
 
