@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Scenes/button.tres.gd" type="Script" id=1]
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=1]
 
 custom_solver_bias = 0.0
 extents = Vector2( 10, 10 )
@@ -43,7 +43,7 @@ _sections_unfolded = [ "Texture" ]
 
 [node name="shape" type="CollisionShape2D" parent="." index="1"]
 
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 
 [connection signal="body_entered" from="." to="." method="_on_button_body_entered"]
 
