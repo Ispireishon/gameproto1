@@ -1,14 +1,52 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scenes/player.gd" type="Script" id=1]
+[ext_resource path="res://Sprites/player_jump3.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/player_stand.png" type="Texture" id=3]
+[ext_resource path="res://Sprites/player_jump1.png" type="Texture" id=4]
+[ext_resource path="res://Sprites/player_jump2.png" type="Texture" id=5]
+[ext_resource path="res://Sprites/player_run0.png" type="Texture" id=6]
+[ext_resource path="res://Sprites/player_run1.png" type="Texture" id=7]
+[ext_resource path="res://Sprites/player_run2.png" type="Texture" id=8]
+[ext_resource path="res://Sprites/player_run3.png" type="Texture" id=9]
+[ext_resource path="res://Sprites/player_run4.png" type="Texture" id=10]
 
-[sub_resource type="CapsuleShape2D" id=1]
+[sub_resource type="SpriteFrames" id=1]
+
+animations = [ {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "jump_down",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "stand",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 4 ) ],
+"loop": true,
+"name": "jump_up",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 5 ) ],
+"loop": true,
+"name": "jump_middle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ) ],
+"loop": true,
+"name": "run",
+"speed": 12.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=2]
 
 custom_solver_bias = 0.0
-radius = 20.0
-height = 40.0
+radius = 10.602
+height = 45.6505
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=3]
 
 custom_solver_bias = 0.0
 extents = Vector2( 37.6526, 10 )
@@ -24,6 +62,7 @@ _sections_unfolded = [ "Collision", "collision" ]
 
 [node name="Polygon2D" type="Polygon2D" parent="." index="0"]
 
+visible = false
 position = Vector2( 0, 1.10445 )
 scale = Vector2( 2, 2 )
 polygon = PoolVector2Array( -9.66302, -20.3437, 10.1204, -20.1343, 10.1204, 19.6418, -10.5275, 19.7056 )
@@ -40,28 +79,38 @@ invert_enable = false
 invert_border = 100.0
 _sections_unfolded = [ "Transform" ]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
+[node name="sprite" type="AnimatedSprite" parent="." index="1"]
 
-shape = SubResource( 1 )
+scale = Vector2( 0.1, 0.1 )
+frames = SubResource( 1 )
+animation = "jump_down"
+playing = true
 _sections_unfolded = [ "Transform" ]
 
-[node name="pos_cacher" type="Timer" parent="." index="2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="2"]
+
+position = Vector2( 0, 2.42071 )
+shape = SubResource( 2 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="pos_cacher" type="Timer" parent="." index="3"]
 
 process_mode = 0
 wait_time = 0.15
 one_shot = false
 autostart = true
 
-[node name="wait_timer" type="Timer" parent="." index="3"]
+[node name="wait_timer" type="Timer" parent="." index="4"]
 
 process_mode = 1
 wait_time = 0.1
 one_shot = true
 autostart = false
 
-[node name="area_lever" type="Area2D" parent="." index="4"]
+[node name="area_lever" type="Area2D" parent="." index="5"]
 
 editor/display_folded = true
+visible = false
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
@@ -77,21 +126,23 @@ _sections_unfolded = [ "Collision" ]
 [node name="CollisionShape2D" type="CollisionShape2D" parent="area_lever" index="0"]
 
 position = Vector2( 0.21463, 30.2641 )
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
-[node name="chain_ray" type="RayCast2D" parent="." index="5"]
+[node name="chain_ray" type="RayCast2D" parent="." index="6"]
 
+visible = false
 enabled = false
 exclude_parent = true
 cast_to = Vector2( 320, 0 )
 collision_mask = 1
 
-[node name="camera" type="Camera2D" parent="." index="6"]
+[node name="camera" type="Camera2D" parent="." index="7"]
 
+position = Vector2( 0.711975, 0.142395 )
 anchor_mode = 1
 rotating = false
 current = true
-zoom = Vector2( 1, 1 )
+zoom = Vector2( 0.4, 0.4 )
 limit_left = -10000000
 limit_top = -10000000
 limit_right = 10000000
@@ -112,7 +163,7 @@ editor_draw_limits = false
 editor_draw_drag_margin = false
 _sections_unfolded = [ "Drag Margin" ]
 
-[node name="UI" type="CanvasLayer" parent="." index="7"]
+[node name="UI" type="CanvasLayer" parent="." index="8"]
 
 layer = 1
 offset = Vector2( 0, 0 )
@@ -122,6 +173,7 @@ transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 
 [node name="lblfps" type="Label" parent="UI" index="0"]
 
+visible = false
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0

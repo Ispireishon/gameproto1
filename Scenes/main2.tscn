@@ -5,7 +5,7 @@
 [ext_resource path="res://Sprites/bonus.png" type="Texture" id=3]
 [ext_resource path="res://Scenes/player.tscn" type="PackedScene" id=4]
 
-[node name="main" type="Node2D"]
+[node name="main" type="Node2D" index="0"]
 
 _sections_unfolded = [ "Transform" ]
 

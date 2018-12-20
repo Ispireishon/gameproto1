@@ -105,7 +105,23 @@ func _physics_process(delta):
 				
 	
 		
-	
+	match STATE:
+		STAND:
+			$sprite.play('stand')
+		RUN:
+			if abs(linear_vel.x) >= MIN_RUN_SPEED:
+				$sprite.scale.x = sign(linear_vel.x) * abs($sprite.scale.x)
+			$sprite.play('run')
+		JUMP:
+			if abs(linear_vel.x) >= MIN_RUN_SPEED:
+				$sprite.scale.x = sign(linear_vel.x) * abs($sprite.scale.x)
+			if linear_vel.y < 0:
+				$sprite.play('jump_up')
+			elif linear_vel.y < GRAVITY_VEC.y * delta * 6:
+				$sprite.play('jump_middle')
+			else:
+				$sprite.play('jump_down')
+				
 	#update animation:
 #	match STATE:
 #		STAND:
