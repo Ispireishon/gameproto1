@@ -1,6 +1,4 @@
-*.kra
 *.import
 *.png
 .import/*
 Export/*
-Sprites/*
