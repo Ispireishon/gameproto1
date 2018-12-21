@@ -8,7 +8,7 @@ custom_solver_bias = 0.0
 extents = Vector2( 10, 10 )
 
 [node name="lever" type="Area2D" groups=[
-"activate",
+"interaction",
 ]]
 
 input_pickable = true
@@ -23,13 +23,12 @@ audio_bus_override = false
 audio_bus_name = "Master"
 script = ExtResource( 1 )
 _sections_unfolded = [ "Audio Bus", "Collision", "Pause" ]
-connects = [ NodePath("../soft_wall"), NodePath("../soft_wall2") ]
-timeout = 0.0
+connects = null
 
 [node name="polygon" type="Polygon2D" parent="." index="0"]
 
 position = Vector2( 1.02094, 0.0510464 )
-polygon = PoolVector2Array( -5.22309, -10.9725, -0.223202, -4.0977, 5.54055, -4.0977, 5.54055, 2.08271, -7.93136, 2.15215, -8.27857, -3.88937, -3.34813, -3.81993, -6.95916, -10.7642 )
+polygon = PoolVector2Array( 5.54055, -4.0977, 5.54055, 2.08271, -7.93136, 2.15215, -8.27857, -3.88937, -2.92173, -4.11852, -7.28955, -10.8474, -4.71171, -10.7227, -0.414849, -4.24386 )
 uv = PoolVector2Array(  )
 color = Color( 0.717647, 0.568627, 1, 1 )
 vertex_colors = PoolColorArray(  )
@@ -43,18 +42,9 @@ invert_enable = false
 invert_border = 100.0
 _sections_unfolded = [ "Texture" ]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
+[node name="shape" type="CollisionShape2D" parent="." index="1"]
 
 visible = false
 shape = SubResource( 1 )
-
-[node name="timeout" type="Timer" parent="." index="2"]
-
-process_mode = 1
-wait_time = 1.0
-one_shot = true
-autostart = false
-
-[connection signal="timeout" from="timeout" to="." method="_on_timeout_timeout"]
 
 

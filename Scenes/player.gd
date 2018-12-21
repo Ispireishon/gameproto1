@@ -9,11 +9,15 @@ const HOOK_JUMP = Vector2(600, -480*1.5)
 const HOOK_SWING = 4
 const CLIMB_SPEED = 100
 
+export (bool) var god_mode = false
+
 const MIN_RUN_SPEED = 0.2
 
-enum STATES {RUN, JUMP, STAND, HOOK_MOVE}
+enum STATES {RUN, JUMP, STAND, HOOK_MOVE, DEAD, TELEPORT}
 
 var STATE = STAND
+
+var health = 3 setget set_health
 
 var hook = preload('res://Scenes/hook.tscn').instance()
 var _hook_length = 1
@@ -32,8 +36,17 @@ func _process(delta):
 
 func _physics_process(delta):
 	
-	linear_vel += GRAVITY_VEC * delta
-	linear_vel = move_and_slide(linear_vel, FLOOR_NORMAL, SLOPE_SLIDE_STOP)
+	if STATE == DEAD:
+		hide()
+		return
+	
+	if STATE == TELEPORT:
+		$pos_cacher.start()
+		return
+	
+	if STATE != TELEPORT:
+		linear_vel += GRAVITY_VEC * delta
+		linear_vel = move_and_slide(linear_vel, FLOOR_NORMAL, SLOPE_SLIDE_STOP)
 	
 	#state action
 	match STATE:
@@ -41,7 +54,10 @@ func _physics_process(delta):
 			input_move()
 			input_jump()
 			input_hook()
+			input_activate()
 		HOOK_MOVE:
+			
+			
 			var d = global_position - hook.global_position
 			if d.length() > _hook_length:
 				linear_vel -= (d.length() -_hook_length)*d.normalized() / delta
@@ -49,6 +65,8 @@ func _physics_process(delta):
 				_hooked = true
 				
 			input_hook()
+			input_activate()
+			
 			if is_on_floor() or not _hooked:
 				input_move()
 				input_jump()
@@ -78,8 +96,7 @@ func _physics_process(delta):
 						
 			if Input.is_action_pressed('down'):
 				_hook_length = min(hook.MAX_DISTANCE, _hook_length + CLIMB_SPEED*delta)
-	#match HOOK_STATE:
-	
+			
 	
 	#state update
 	match STATE:
@@ -99,19 +116,25 @@ func _physics_process(delta):
 #				linear_vel.y = HOOK_JUMP.y
 				_hook_length = d.length()
 				_hooked = false
+			
+			input_teleport()
+		
 		HOOK_MOVE:
 			if not hook.is_grubbed():
 				STATE = JUMP
-				
+			
+			input_teleport()
 	
 		
 	match STATE:
 		STAND:
 			$sprite.play('stand')
+		
 		RUN:
 			if abs(linear_vel.x) >= MIN_RUN_SPEED:
 				$sprite.scale.x = sign(linear_vel.x) * abs($sprite.scale.x)
 			$sprite.play('run')
+		
 		JUMP:
 			if abs(linear_vel.x) >= MIN_RUN_SPEED:
 				$sprite.scale.x = sign(linear_vel.x) * abs($sprite.scale.x)
@@ -121,7 +144,8 @@ func _physics_process(delta):
 				$sprite.play('jump_middle')
 			else:
 				$sprite.play('jump_down')
-				
+		
+		
 	#update animation:
 #	match STATE:
 #		STAND:
@@ -187,6 +211,20 @@ func _physics_process(delta):
 #			if b.is_in_group('activate'):
 #				b.activate()
 
+func input_activate():
+	if Input.is_action_just_pressed('activate'):
+		for b in $area_lever.get_overlapping_areas():
+			if b.is_in_group('interaction'):
+				b.activate()
+
+func input_teleport():
+	if Input.is_action_pressed("pos_back"):
+		if poses_array.size() > 0:
+			STATE = TELEPORT
+			global_position = poses_array.pop_back()
+			$pos_cacher.start()
+			$wait_timer.start()
+			hook.hide()
 
 func input_move():
 	var move_dir = 0
@@ -213,3 +251,16 @@ func _on_pos_cacher_timeout():
 		poses_array.pop_front()
 	
 	poses_array.append(global_position)
+
+func get_damage(val):
+	self.health -= val
+
+func set_health(h):
+	health = h
+	$UI/health.rect_size.x = h * $UI/health.rect_size.y
+	if health <= 0 and not god_mode:
+		$UI/health.hide()
+		STATE = DEAD
+
+func _on_wait_timer_timeout():
+	STATE = JUMP

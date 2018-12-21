@@ -11,7 +11,7 @@ config_version=3
 [application]
 
 config/name="Game Prototype"
-run/main_scene="res://Scenes/main3.tscn"
+run/main_scene="res://Scenes/main4.tscn"
 config/icon="res://Sprites/bonus.png"
 
 [autoload]
@@ -41,6 +41,12 @@ chain_throw=[ Object(InputEventMouseButton,"resource_local_to_scene":false,"reso
  ]
 down=[ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":83,"unicode":0,"echo":false,"script":null)
  ]
+
+[layer_names]
+
+2d_physics/layer_1="wall"
+2d_physics/layer_2="activate"
+2d_physics/layer_3="player"
 
 [rendering]
 

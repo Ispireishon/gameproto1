@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Scenes/button.tres.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/button0.gd" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -9,6 +9,7 @@ extents = Vector2( 10, 10 )
 
 [node name="button" type="Area2D"]
 
+position = Vector2( 0.322489, 0.875328 )
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
@@ -21,12 +22,12 @@ audio_bus_override = false
 audio_bus_name = "Master"
 script = ExtResource( 1 )
 _sections_unfolded = [ "Audio Bus", "Collision", "Pause" ]
-lever = null
-timeout = null
+connects = null
+timeout = 2.0
 
 [node name="polygon" type="Polygon2D" parent="." index="0"]
 
-position = Vector2( 1.02094, 0.0510464 )
+position = Vector2( 1, 0 )
 polygon = PoolVector2Array( 5.54055, -4.0977, 5.54055, 2.08271, -7.93136, 2.15215, -8.27857, -3.88937 )
 uv = PoolVector2Array(  )
 color = Color( 0.717647, 0.568627, 1, 1 )
@@ -39,12 +40,22 @@ texture_scale = Vector2( 1, 1 )
 texture_rotation_degrees = 0.0
 invert_enable = false
 invert_border = 100.0
-_sections_unfolded = [ "Texture" ]
+_sections_unfolded = [ "Texture", "Transform" ]
 
-[node name="shape" type="CollisionShape2D" parent="." index="1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
 
+visible = false
 shape = SubResource( 1 )
 
+[node name="timeout" type="Timer" parent="." index="2"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = true
+autostart = false
+
 [connection signal="body_entered" from="." to="." method="_on_button_body_entered"]
+
+[connection signal="timeout" from="timeout" to="." method="_on_timeout_timeout"]
 
 

@@ -12,6 +12,8 @@ func _unhandled_input(event):
 		get_tree().change_scene("res://Scenes/main2.tscn")
 	if pressed_key(event) == KEY_3:
 		get_tree().change_scene("res://Scenes/main3.tscn")
+	if pressed_key(event) == KEY_4:
+		get_tree().change_scene("res://Scenes/main4.tscn")
 
 	
 func pressed_key(event):
